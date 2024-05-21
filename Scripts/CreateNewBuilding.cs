@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CreateNewBuilding : MonoBehaviour
 {
@@ -37,6 +38,9 @@ public class CreateNewBuilding : MonoBehaviour
             
             if (Input.GetMouseButtonDown(0))
             {
+                if(EventSystem.current.IsPointerOverGameObject())
+                    return;
+                
                 _flyingBuilding = Instantiate(_selectedPrefabBuilding);
                 _flyingBuilding.name = $"Conveyor{numConv}";
                 numConv++;

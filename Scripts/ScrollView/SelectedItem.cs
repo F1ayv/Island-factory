@@ -13,16 +13,7 @@ public class SelectedItem : MonoBehaviour
             if(b1 == null)
                 continue;
 
-            GameObject selectedIcon = null;
-            for (int j = 0; j < b1.transform.childCount; j++)
-            {
-                if (b1.transform.GetChild(j).name == "Selected")
-                {
-                    selectedIcon = b1.transform.GetChild(j).gameObject;
-                    break;
-                }
-            }
-            
+            GameObject selectedIcon = FindChildrenOfName(b1);
             if(selectedIcon == null)
                 continue;
             
@@ -30,6 +21,22 @@ public class SelectedItem : MonoBehaviour
         }
     }
 
+    GameObject FindChildrenOfName(Transform b1)
+    {
+        GameObject selectedIcon = null;
+        for (int j = 0; j < b1.transform.childCount; j++)
+        {
+            if (b1.transform.GetChild(j).name == "Selected")
+            {
+                selectedIcon = b1.transform.GetChild(j).gameObject;
+                break;
+            }
+            selectedIcon = FindChildrenOfName(b1.transform.GetChild(j));
+            if (selectedIcon != null)
+                return selectedIcon;
+        }
+        return selectedIcon;
+    }
     public void SetActiveSelectedRam(GameObject g,bool activity)
     {
         g.SetActive(activity);

@@ -5,4 +5,5 @@ using UnityEngine;
 public interface ITile
 {
     Vector2 GetSize();
+    public void CheckPos();
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class Conveyor : MonoBehaviour, IConveyor
+public class Conveyor : Tile, IConveyor
 {
     [SerializeField]
     public Mesh[] ModelsConveyor;
@@ -13,7 +13,7 @@ public class Conveyor : MonoBehaviour, IConveyor
     private static float speed = 1;
 
     private List<Vector3> _baseVectors = new() {Vector3.forward, Vector3.back,Vector3.right, Vector3.left };
-    private List<Tuple<int, GameObject>> resList = new ();
+    private List <GameObject> resList = new ();
     private IOutput _conveyorInput;
     private IInput _conveyorOutput;
     private GameObject LastRes;
@@ -29,35 +29,34 @@ public class Conveyor : MonoBehaviour, IConveyor
         for (int i = 0; i < resList.Count; i++)
         {
             var transform1 = transform.position;
-            Vector3 target = new Vector3(transform1.x,resList[i].Item2.transform.position.y,transform1.z);
+            Vector3 target = new Vector3(transform1.x,resList[i].transform.position.y,transform1.z);
             
             if (i == 0)
             {
                 if (LastRes != null)
                 {
-                    if(Vector3.Distance(LastRes.transform.position, resList[i].Item2.transform.position) > 0.4f)
-                        resList[i].Item2.transform.position = Vector3.MoveTowards(resList[i].Item2.transform.position, target,Time.deltaTime*speed);
+                    if(Vector3.Distance(LastRes.transform.position, resList[i].transform.position) > 0.4f)
+                        resList[i].transform.position = Vector3.MoveTowards(resList[i].transform.position, target,Time.deltaTime*speed);
                 }
                 else
-                    resList[i].Item2.transform.position = Vector3.MoveTowards(resList[i].Item2.transform.position, target,Time.deltaTime * speed);
+                    resList[i].transform.position = Vector3.MoveTowards(resList[i].transform.position, target,Time.deltaTime * speed);
             }
-            else if (Vector3.Distance(resList[i].Item2.transform.position, resList[i - 1].Item2.transform.position)>0.4f)
+            else if (Vector3.Distance(resList[i].transform.position, resList[i - 1].transform.position)>0.4f)
             {
-                resList[i].Item2.transform.position = Vector3.MoveTowards(resList[i].Item2.transform.position, target,
+                resList[i].transform.position = Vector3.MoveTowards(resList[i].transform.position, target,
                     Time.deltaTime * speed);
             }
 
-            if (_conveyorOutput != null && Vector3.Distance(resList[i].Item2.transform.position, target) == 0)
+            if (_conveyorOutput != null && Vector3.Distance(resList[i].transform.position, target) <= 0.0001f)
             {
-                LastRes = resList[i].Item2;
+                LastRes = resList[i];
                 _conveyorOutput.NewRes(resList[i]);
                 resList.RemoveAt(i);
                 i--;
             }
         }
     }
-
-    public void ChecPos()
+    public override void CheckPos()
     {
         bool Output = false, Input = false;
         for (int i = 0; i < _baseVectors.Count; i++)
@@ -67,20 +66,21 @@ public class Conveyor : MonoBehaviour, IConveyor
             if (Physics.Raycast(ray, out hit, 0.7f))
             {
                 Transform transformBulding = hit.transform;
-                if (transformBulding.tag == "Output")
+                if (transformBulding.tag == "Output" && _conveyorInput == null)
                 {
-                    IInput input = transformBulding.parent.GetComponent<IInput>();
-                    input.SetOutput(this);
-                    SetInput((IOutput)input);
+                    Debug.Log("1241");
+                    IOutput input = transformBulding.GetComponent<IOutput>();
+                    input.Input = this; 
+                    //Input = true;
+                    _conveyorInput = input;
                 }
                 else if (transformBulding.tag == "Conveyor")
                 {
                     Debug.Log("Найден:" + name);
                     IConveyor conv = transformBulding.GetComponent<IConveyor>();
-                    float f = Quaternion.Angle(transform.rotation, conv.GetPos().rotation);
                     if (conv.GetOutput() == null)
                     {
-                        if (conv.GetInput() == null && Input == false)
+                        if (conv.GetInput() == null && _conveyorOutput == null)
                         {
                             //transform.rotation = Quaternion.AngleAxis(Quaternion.Angle(transform.rotation,conv.GetPos().transform.rotation),Vector3.up);
                             //transform.LookAt(conv.GetPos());
@@ -93,21 +93,22 @@ public class Conveyor : MonoBehaviour, IConveyor
                         {
                             //conv.GetPos().rotation = Quaternion.AngleAxis(Quaternion.Angle(transform.rotation,conv.GetPos().transform.rotation),Vector3.up);
                             //conv.GetPos().LookAt(transform);
-                            if (Output == false)
+                            if (_conveyorInput == null)
                             { 
                                 _conveyorInput = conv;
                                 conv.SetOutput(this);
-                                Output = true;
+                                //Output = true;
                                 Debug.Log("Выход "+conv.GetPos().name + " = " +name);
                             }
                         }
                     }
                     else
                     {
-                        if (conv.GetInput() == null && Input == false)
+                        if (conv.GetInput() == null && _conveyorOutput==null)
                         {
                             //transform.LookAt(conv.GetPos());
-                            //transform.rotation = Quaternion.AngleAxis(Quaternion.Angle(transform.rotation,conv.GetPos().transform.rotation),Vector3.up);
+                            //transform.rotation = 
+                            _conveyorOutput=conv;
                             SetOutput(conv);
                             conv.SetInput(this);
                             Input = true;
@@ -149,6 +150,7 @@ public class Conveyor : MonoBehaviour, IConveyor
 
                 transformConv = transform;
                 transform.LookAt(GetInput().GetPos());
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
                 transform.eulerAngles += new Vector3(0, 90, 0);
                 Transform t = _conveyorInput.GetPos();
                 FindPosition(0,t,_conveyorOutput.GetPos(),-1);
@@ -187,6 +189,7 @@ public class Conveyor : MonoBehaviour, IConveyor
         {
             transformConv = _conveyorInput.GetPos();
             transform.LookAt(transformConv);
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             transform.eulerAngles += new Vector3(0, 90, 0);
             if (_conveyorInput.GetInput() == null)
                 return;
@@ -249,12 +252,6 @@ public class Conveyor : MonoBehaviour, IConveyor
         
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position+Vector3.up/3, Vector3.back);
-    }
-
     public IInput GetOutput()
     {
         return _conveyorOutput;
@@ -279,12 +276,12 @@ public class Conveyor : MonoBehaviour, IConveyor
 
     public IOutput Output { get; set; }
 
-    public void NewRes(Tuple<int, GameObject> res)
+    public void NewRes(GameObject res)
     {
-        if (res.Item2 == null)
+        if (res == null)
             return;
         
-        res.Item2.transform.SetParent(transform);
+        res.transform.SetParent(transform);
         resList.Add(res);
     }
 
@@ -301,5 +298,25 @@ public class Conveyor : MonoBehaviour, IConveyor
     public Transform GetPos()
     {
         return transform;
+    }
+    
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position+Vector3.up/3, Vector3.back);
+        
+        for (int x = 0; x < _sizeX; x++)
+        {
+            for (int y = 0; y < _sizeZ; y++)
+            {
+                if((x+y)%2==1)
+                    Gizmos.color = Color.red;
+                else
+                    Gizmos.color = Color.blue;
+                
+                Vector3 pos = new Vector3( + x + transform.position.x , 0, + y + transform.position.z );
+                Gizmos.DrawCube(pos, new Vector3(1, 0.1f, 1));
+            }
+        }
     }
 }

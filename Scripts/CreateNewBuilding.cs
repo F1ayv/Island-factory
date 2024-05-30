@@ -61,21 +61,8 @@ public class CreateNewBuilding : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
-                if (_flyingBuilding.transform.tag == "ResurseGiver")
-                {
-                    
-                }
-
-                if (_flyingBuilding.transform.tag == "Conveyor")
-                {
-                    Conveyor conveyor = _flyingBuilding.GetComponent<Conveyor>();
-                    conveyor.ChecPos();
-                }
-
-                if (_flyingBuilding.transform.GetChild(0).tag == "Mekanism")
-                {
-
-                }
+                ITile tile = _flyingBuilding.GetComponent<ITile>();
+                tile.CheckPos();
 
                 _flyingBuilding = null;
             }

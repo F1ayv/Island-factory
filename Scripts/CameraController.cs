@@ -11,11 +11,15 @@ public class CameraController : MonoBehaviour
     private bool _isFirstDirection = true;
     private Vector2 _firstPoint;
     [SerializeField]
-    private float x = 0.0f, _distanse;
+    private float x = 0.0f, _distance;
+    public float mouseSensitivity = 100f; // Чувствительность мыши
+    public float movementSpeed = 5f; 
+    [SerializeField]
+    private Vector3 lastMousePosition,saveCamPos, cameraRayCenter;
     // Start is called before the first frame update
     void Start()
     {
-        _distanse = (transform.position.y)/ Mathf.Sin(Mathf.Deg2Rad * transform.eulerAngles.x);
+        FindDistance();
         _isRotation = true;
         Rotation();
         _isRotation = false;
@@ -25,17 +29,77 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         Rotation();
+        Move();
+        Zoom();
     }
 
     private void Rotation()
     {
         if(!_isRotation)
             return;
-
+        
         x += Input.GetAxis("Mouse X") * 1000 * Time.deltaTime;
         UpdateCameraPosition();
         _isFirstDirection = false;
         return;
+    }
+
+    private void Zoom()
+    {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        Camera.main.orthographicSize -= scroll * 10;
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 4, 10);
+    }
+
+    private void Move()
+    {
+        if(_isRotation || CreateNewBuilding.IsBuildingMode)
+            return;
+        
+        FindDistance();
+        if (Input.GetMouseButtonDown(0))
+        {
+            lastMousePosition = MousePositionToWorldPoint();
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 targetPoint = MousePositionToWorldPoint();
+            transform.position = new Vector3(transform.position.x - (targetPoint.x - lastMousePosition.x) , transform.position.y, transform.position.z-(targetPoint.z - lastMousePosition.z));
+        }
+
+    }
+
+    public Vector3 MousePositionToWorldPoint()
+    {
+        Vector3 mouseScreenPosition = Input.mousePosition;
+        mouseScreenPosition.z = Camera.main.nearClipPlane;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+
+        // Корректируем высоту до 0
+        worldPosition.y = 0;
+        return worldPosition;
+    }
+    
+    private void FindDistance()
+    {
+        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+
+        // Выпускаем луч из камеры в центр экрана
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        // Виртуальная плоскость на уровне Y=0
+        Plane groundPlane = new Plane(Vector3.up, 0);
+
+        // Переменная для хранения расстояния до пересечения с плоскостью
+
+        // Проверяем пересечение луча с плоскостью
+        if (groundPlane.Raycast(ray, out _distance))
+        {
+            // Получаем точку пересечения
+            cameraRayCenter = ray.GetPoint(_distance);
+        }
+
     }
 
     public void SetIsRotation(bool isRotation)
@@ -49,12 +113,12 @@ public class CameraController : MonoBehaviour
     void UpdateCameraPosition()
     {
         Quaternion rotation = Quaternion.Euler(transform.eulerAngles.x, x, 0);
-        Vector3 position = rotation * new Vector3(0.0f, 0, -_distanse) + new Vector3(0,0f,0);
+        Vector3 position = rotation * new Vector3(0.0f, 0, -_distance) + cameraRayCenter;
         position = new Vector3(position.x, 10, position.z);
 
         transform.rotation = rotation;
         transform.position = position;
 
-        // ������������� ���� ������� ��
+        // ������������� ���� ������� ��
     }
 }

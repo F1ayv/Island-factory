@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class CreateNewBuilding : MonoBehaviour
 {
     [SerializeField] private GameObject _selectedPrefabBuilding;
-    [SerializeField] private bool _isBuildingMode = true;
+    [SerializeField] public static bool IsBuildingMode = true;
     [SerializeField] private Vector2 _sizePrefab;
     GameObject _flyingBuilding;
     public void SelectPrefabBuilding(GameObject prefab)
@@ -31,7 +31,7 @@ public class CreateNewBuilding : MonoBehaviour
     private int numConv = 0;
     void Update()
     {
-        if (_isBuildingMode)
+        if (IsBuildingMode)
         {
             if(_selectedPrefabBuilding == null)
                 return;
@@ -48,15 +48,35 @@ public class CreateNewBuilding : MonoBehaviour
             
             if(_flyingBuilding == null)
                 return;
-            var groundPlane = new Plane(Vector3.up, Vector3.zero);
+            
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (groundPlane.Raycast(ray, out float position))
+            RaycastHit[] hits = Physics.RaycastAll(ray,1000);
+
+            int lastHit = -1;
+            for (int i = 0; i < hits.Length; i++)
             {
-                Vector3 worldPosition = ray.GetPoint(position);
-                //Vector2 sizeBuilding = _flyingBuilding.GetSize();
-                int x = Mathf.RoundToInt(worldPosition.x);
-                int y = Mathf.RoundToInt(worldPosition.z);
-                _flyingBuilding.transform.position = new Vector3(x,0,y);
+                Transform t = hits[i].transform;
+
+                if (t.tag == "Ground")
+                {
+                    if (lastHit < 0)
+                        lastHit = i;
+                    else
+                    {
+                        if(hits[i].distance > hits[lastHit].distance)
+                            continue;
+                    }
+                    
+                    lastHit = i;
+                    Vector3 worldPosition = t.position;
+                    Debug.Log(worldPosition);
+                    // Change the material of all hit colliders
+                    // to use a transparent shader.
+                    int x = Mathf.RoundToInt(worldPosition.x);
+                    int y = Mathf.RoundToInt(worldPosition.y);
+                    int z = Mathf.RoundToInt(worldPosition.z);
+                    _flyingBuilding.transform.position = new Vector3(x,y,z);
+                }
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -67,5 +87,10 @@ public class CreateNewBuilding : MonoBehaviour
                 _flyingBuilding = null;
             }
         }
+    }
+
+    public void SetBuidingMode()
+    {
+        IsBuildingMode = !IsBuildingMode;
     }
 }

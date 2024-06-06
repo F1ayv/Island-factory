@@ -2,19 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Output : MonoBehaviour, IOutput
+public class InputMy : MonoBehaviour, IInput
 {
-    public IInput Input { get; set; }
-    public virtual void SetInput(IOutput b)
+    public IMekanism parent; 
+    public IOutput Output { get; set; }
+    public void NewRes(GameObject res)
+    {
+        parent.GenerationRes(res);
+    }
+
+    public bool CheckOpacity()
+    {
+        return true;
+    }
+    public virtual void SetOutput(IInput b)
     {
         
     }
+
     public Transform GetPos()
     {
         return transform;
     }
 
-    public virtual IOutput GetInput()
+    public IInput GetOutput()
     {
         return null;
     }
@@ -24,7 +35,7 @@ public class Output : MonoBehaviour, IOutput
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(transform.position,transform.right*1);
     }
-
+    
     public void CheckPos()
     {
         Ray ray = new Ray(transform.position + Vector3.up / 5, transform.right);
@@ -35,11 +46,11 @@ public class Output : MonoBehaviour, IOutput
             if (transformBulding.tag == "Conveyor")
             {
                 Conveyor conveyor = transformBulding.GetComponent<Conveyor>();
-                if (conveyor._conveyorInput == null)
+                if (conveyor._conveyorOutput == null)
                 {
-                    conveyor._conveyorInput = this;
+                    conveyor._conveyorOutput = this;
                     conveyor.CheckPos();
-                    Input = transformBulding.GetComponent<Conveyor>();
+                    Output = transformBulding.GetComponent<Conveyor>();
                 }
 
                 break;

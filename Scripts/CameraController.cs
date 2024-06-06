@@ -39,7 +39,15 @@ public class CameraController : MonoBehaviour
             return;
         
         x += Input.GetAxis("Mouse X") * 1000 * Time.deltaTime;
-        UpdateCameraPosition();
+        
+        Quaternion rotation = Quaternion.Euler(transform.eulerAngles.x, x, 0);
+        cameraRayCenter.y = 10;
+        Vector3 position = rotation * new Vector3(0.0f, 0, -_distance-0.3f) + cameraRayCenter;
+        position = new Vector3(position.x, 10, position.z);
+
+        transform.rotation = rotation;
+        transform.position = position;
+        
         _isFirstDirection = false;
         return;
     }
@@ -70,7 +78,7 @@ public class CameraController : MonoBehaviour
 
     }
 
-    public Vector3 MousePositionToWorldPoint()
+    public static Vector3 MousePositionToWorldPoint()
     {
         Vector3 mouseScreenPosition = Input.mousePosition;
         mouseScreenPosition.z = Camera.main.nearClipPlane;
@@ -83,7 +91,7 @@ public class CameraController : MonoBehaviour
     
     private void FindDistance()
     {
-        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
 
         // Выпускаем луч из камеры в центр экрана
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
@@ -109,16 +117,5 @@ public class CameraController : MonoBehaviour
         
         _isRotation = isRotation;
     }
-
-    void UpdateCameraPosition()
-    {
-        Quaternion rotation = Quaternion.Euler(transform.eulerAngles.x, x, 0);
-        Vector3 position = rotation * new Vector3(0.0f, 0, -_distance) + cameraRayCenter;
-        position = new Vector3(position.x, 10, position.z);
-
-        transform.rotation = rotation;
-        transform.position = position;
-
-        // ������������� ���� ������� ��
-    }
+    
 }

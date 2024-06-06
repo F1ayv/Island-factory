@@ -6,6 +6,7 @@ public interface IMekanism
 {
     List<IInput> Inputs { get; set; }
     List<IOutput> Outputs { get; set; }
-    public void GenerationRes(GameObject gameObject);
-    void FindOutputs();
+    public bool GenerationRes(GameObject gameObject);
+    public bool GetRes(GameObject res);
+    void FindOutputsInputs();
 }

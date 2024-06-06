@@ -4,15 +4,51 @@ using UnityEngine;
 
 public abstract class Mekanism : Tile, IMekanism
 {
+    private int needOutputID = 0;
     public List<IInput> Inputs { get; set;}
     public List<IOutput> Outputs { get; set ; }
     public GameObject prefabRes;
     
+    [SerializeField]
     private float _timerSpawnerRes, _reloadTimeSpawnerRes = 1;
     private float lastOutput;
-    public abstract void GenerationRes(GameObject gameObject);
 
-    public void FindOutputs()
+    public virtual bool GenerationRes(GameObject gameObject)
+    {
+        int emptyInput = CheckInput(needOutputID, Outputs.Count);
+        if(emptyInput < 0)
+            emptyInput = CheckInput(0, needOutputID);
+        if (emptyInput < 0)
+        {
+            return false;
+        }
+
+        needOutputID = emptyInput;
+
+        GameObject res = Instantiate(gameObject, Outputs[needOutputID].Input.GetPos());
+        res.transform.position = new Vector3(transform.position.x, 0.4f + res.transform.localScale.y / 2,
+            transform.position.z);
+        
+        Outputs[needOutputID].Input.NewRes(res);
+        needOutputID++;
+        return true;
+
+        int CheckInput(int startPos,int finalPos)
+        {
+            while (startPos < finalPos)
+            {
+                if (Outputs[startPos].Input == null || !Outputs[startPos].Input.CheckOpacity())
+                {
+                    startPos++;
+                }
+                else
+                    return startPos;
+            }
+            return -1;
+        }
+    }
+
+    public void FindOutputsInputs()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -21,8 +57,17 @@ public abstract class Mekanism : Tile, IMekanism
                 Output output = transform.GetChild(i).GetComponent<Output>();
                 Outputs.Add(output);
             }
+            
+            if (transform.GetChild(i).tag == "Input")
+            {
+                InputMy input = transform.GetChild(i).GetComponent<InputMy>();
+                input.parent = this;
+                Inputs.Add(input);
+            }
         }
     }
+
+    public abstract bool GetRes(GameObject res);
 
     public override void CheckPos()
     {
@@ -34,6 +79,15 @@ public abstract class Mekanism : Tile, IMekanism
             Output outputReal = output as Output;
             outputReal.CheckPos();
         }
+        
+        foreach (var input in Inputs)
+        {
+            if(!(input is InputMy))
+                continue;
+            
+            InputMy inputReal = input as InputMy;
+            inputReal.CheckPos();
+        }
     }
 
     // Start is called before the first frame update
@@ -41,7 +95,7 @@ public abstract class Mekanism : Tile, IMekanism
     {
         Inputs = new List<IInput>();
         Outputs = new List<IOutput>();
-        FindOutputs();
+        FindOutputsInputs();
     }
 
     // Update is called once per frame

@@ -14,8 +14,8 @@ public class Conveyor : Tile, IConveyor
 
     private List<Vector3> _baseVectors = new() {Vector3.forward, Vector3.back,Vector3.right, Vector3.left };
     private List <GameObject> resList = new ();
-    private IOutput _conveyorInput;
-    private IInput _conveyorOutput;
+    public IOutput _conveyorInput;
+    public IInput _conveyorOutput;
     private GameObject LastRes;
     // Start is called before the first frame update
     void Start()
@@ -70,9 +70,12 @@ public class Conveyor : Tile, IConveyor
                 {
                     Debug.Log("1241");
                     IOutput input = transformBulding.GetComponent<IOutput>();
-                    input.Input = this; 
-                    //Input = true;
-                    _conveyorInput = input;
+                    if (input.Input == null)
+                    {
+                        input.Input = this;
+                        //Input = true;
+                        _conveyorInput = input;
+                    }
                 }
                 else if (transformBulding.tag == "Conveyor")
                 {
@@ -283,6 +286,11 @@ public class Conveyor : Tile, IConveyor
         
         res.transform.SetParent(transform);
         resList.Add(res);
+    }
+
+    public bool CheckOpacity()
+    {
+        return resList.Count < 2;
     }
 
     public void RemoveRes(GameObject res)

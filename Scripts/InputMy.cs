@@ -8,7 +8,7 @@ public class InputMy : MonoBehaviour, IInput
     public IOutput Output { get; set; }
     public void NewRes(GameObject res)
     {
-        parent.GenerationRes(res);
+        StartCoroutine(ResourceToLastPos(res));
     }
 
     public bool CheckOpacity()
@@ -52,9 +52,27 @@ public class InputMy : MonoBehaviour, IInput
                     conveyor.CheckPos();
                     Output = transformBulding.GetComponent<Conveyor>();
                 }
-
                 break;
             }
         }
+    }
+
+    public IEnumerator ResourceToLastPos(GameObject res)
+    {
+        Vector3 newPos = new Vector3(transform.position.x, res.transform.position.y,
+            transform.position.z);
+        
+        while (res.transform.position.x - transform.position.x > 0.001f || res.transform.position.z - transform.position.z > 0.001f)
+        {
+            res.transform.position = Vector3.MoveTowards(res.transform.position, newPos, Time.deltaTime * 2);
+            yield return Time.deltaTime;
+        }
+        if(parent!= null)
+            parent.GenerationRes(res);
+        else
+        {
+            Destroy(res);
+        }
+        yield return Time.deltaTime;
     }
 }

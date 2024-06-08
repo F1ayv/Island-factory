@@ -4,9 +4,10 @@ using UnityEngine;
 
 public abstract class Mekanism : Tile, IMekanism
 {
-    private int needOutputID = 0;
+    private int _needOutputID = 0;
     public List<IInput> Inputs { get; set;}
     public List<IOutput> Outputs { get; set ; }
+    public Dictionary<int, int> ResInside = new();
     public GameObject prefabRes;
     
     [SerializeField]
@@ -15,22 +16,22 @@ public abstract class Mekanism : Tile, IMekanism
 
     public virtual bool GenerationRes(GameObject gameObject)
     {
-        int emptyInput = CheckInput(needOutputID, Outputs.Count);
+        int emptyInput = CheckInput(_needOutputID, Outputs.Count);
         if(emptyInput < 0)
-            emptyInput = CheckInput(0, needOutputID);
+            emptyInput = CheckInput(0, _needOutputID);
         if (emptyInput < 0)
         {
             return false;
         }
 
-        needOutputID = emptyInput;
+        _needOutputID = emptyInput;
 
-        GameObject res = Instantiate(gameObject, Outputs[needOutputID].Input.GetPos());
-        res.transform.position = new Vector3(transform.position.x, 0.4f + res.transform.localScale.y / 2,
+        GameObject res = Instantiate(gameObject, Outputs[_needOutputID].Input.GetPos());
+        res.transform.position = new Vector3(transform.position.x, 0.4f,
             transform.position.z);
         
-        Outputs[needOutputID].Input.NewRes(res);
-        needOutputID++;
+        Outputs[_needOutputID].Input.NewRes(res);
+        _needOutputID++;
         return true;
 
         int CheckInput(int startPos,int finalPos)

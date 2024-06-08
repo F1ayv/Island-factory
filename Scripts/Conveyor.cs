@@ -77,6 +77,17 @@ public class Conveyor : Tile, IConveyor
                         _conveyorInput = input;
                     }
                 }
+                else if (transformBulding.tag == "Input" && _conveyorOutput == null)
+                {
+                    Debug.Log("1241");
+                    IInput output = transformBulding.GetComponent<IInput>();
+                    if (output.Output == null)
+                    {
+                        output.Output = this;
+                        //Input = true;
+                        _conveyorOutput = output;
+                    }
+                }
                 else if (transformBulding.tag == "Conveyor")
                 {
                     Debug.Log("Найден:" + name);
@@ -150,8 +161,7 @@ public class Conveyor : Tile, IConveyor
         Transform transformConv, transformConv1;
         if (_conveyorInput != null && _conveyorOutput != null)
         {
-
-                transformConv = transform;
+            transformConv = transform;
                 transform.LookAt(GetInput().GetPos());
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
                 transform.eulerAngles += new Vector3(0, 90, 0);
@@ -163,11 +173,13 @@ public class Conveyor : Tile, IConveyor
                 {
                     Debug.Log("Поворот входа если он 1");
                     _conveyorInput.GetPos().LookAt(transform);
+                    _conveyorInput.GetPos().eulerAngles = new Vector3(0, _conveyorInput.GetPos().eulerAngles.y, 0);
                     _conveyorInput.GetPos().eulerAngles += new Vector3(0, -90, 0);
                 }
                 else
                 {
                     transformConv.LookAt(_conveyorInput.GetInput().GetPos());
+                    transformConv.eulerAngles = new Vector3(0, transformConv.eulerAngles.y, 0);
                     _conveyorInput.GetPos().eulerAngles += new Vector3(0, 90, 0);
                     if (_conveyorInput.GetInput() == null)
                         return;
@@ -179,12 +191,20 @@ public class Conveyor : Tile, IConveyor
                 if (_conveyorOutput.GetOutput() == null)
                 {
                     Debug.Log("Поворот выхода если он 1");
-                    _conveyorOutput.GetPos().LookAt(transform);
-                    _conveyorOutput.GetPos().eulerAngles += new Vector3(0, 90, 0);
+                    if (!(_conveyorOutput is InputMy))
+                    {
+                        _conveyorOutput.GetPos().LookAt(transform);
+                        _conveyorOutput.GetPos().eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                        _conveyorOutput.GetPos().eulerAngles += new Vector3(0, 90, 0);
+                    }
                     return;
                 }
-                transformConv.LookAt(_conveyorOutput.GetOutput().GetPos());
-                _conveyorOutput.GetPos().eulerAngles += new Vector3(0, -90, 0);
+                if (!(_conveyorOutput is InputMy))
+                {
+                    transformConv.LookAt(_conveyorOutput.GetOutput().GetPos());
+                    transformConv.eulerAngles = new Vector3(0, transformConv.eulerAngles.y, 0);
+                    transformConv.eulerAngles += new Vector3(0, -90, 0);
+                }
                 t = _conveyorOutput.GetOutput().GetPos();
                 FindPosition(270,t,transform,1);
         }
@@ -203,6 +223,7 @@ public class Conveyor : Tile, IConveyor
         {
             transformConv = _conveyorOutput.GetPos();
             transform.LookAt(transformConv);
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             transform.eulerAngles += new Vector3(0, -90, 0);
             if (_conveyorOutput.GetOutput() == null)
             {
@@ -222,7 +243,7 @@ public class Conveyor : Tile, IConveyor
             var tang = distanseX/distanseY;
             float angleIn = Math.Abs(Mathf.Atan(tang) * Mathf.Rad2Deg);
             Debug.Log(Mathf.Atan(tang) * Mathf.Rad2Deg);
-            if (Math.Abs(Mathf.Atan(tang) * Mathf.Rad2Deg - 45) < 0.0001f)
+            if (Math.Abs(Mathf.Atan(tang) * Mathf.Rad2Deg - 45) < 35)
             {
                 transformConv.eulerAngles += new Vector3(0, angle, 0);
                 transformConv.GetChild(0).GetComponent<MeshFilter>().mesh = ModelsConveyor[1];
@@ -235,7 +256,7 @@ public class Conveyor : Tile, IConveyor
                 }
             }
 
-            if (Math.Abs(Mathf.Atan(tang) * Mathf.Rad2Deg + 45) < 0.0001f)
+            if (Math.Abs(Mathf.Atan(tang) * Mathf.Rad2Deg + 45) < 35f)
             {
                 transformConv.eulerAngles += new Vector3(0, angle, 0);
                 transformConv.GetChild(0).GetComponent<MeshFilter>().mesh = ModelsConveyor[1];

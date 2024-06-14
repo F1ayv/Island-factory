@@ -6333,7 +6333,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7594,7 +7594,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4369225407168652194, guid: 726a4d0555af6894e9984a16fd9efead, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4369225407168652194, guid: 726a4d0555af6894e9984a16fd9efead, type: 3}
       propertyPath: m_LocalScale.x
@@ -9014,7 +9014,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9768f4160a44c8c4bb59d11bd0b491a0, type: 2}
     - target: {fileID: 789530797208178339, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 789530797208178339, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11963,7 +11963,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &988933699
 GameObject:
@@ -12542,7 +12542,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12923,7 +12923,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16888,7 +16888,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1372712413
 GameObject:
@@ -16984,7 +16984,7 @@ RectTransform:
   m_Children:
   - {fileID: 1250437913}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -17720,7 +17720,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 966619146160706310, guid: fc4bfe88c7adf4642862ed31bcc5ae0e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 966619146160706310, guid: fc4bfe88c7adf4642862ed31bcc5ae0e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20885,7 +20885,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21738,7 +21738,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -22662,7 +22662,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -23812,7 +23812,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4931705327615097792, guid: 41aa78ecddbaaed46b10f265d007fd15, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4931705327615097792, guid: 41aa78ecddbaaed46b10f265d007fd15, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25286,7 +25286,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25433,7 +25433,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300012, guid: 7188e9d0ec465034995ea794e337b4bd, type: 3}
+  m_Sprite: {fileID: 21300012, guid: e919f8b19e6260d44b25ce176dd8ee66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -26256,7 +26256,7 @@ Transform:
   - {fileID: 1390648667}
   - {fileID: 1264373776}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2084426743
 GameObject:

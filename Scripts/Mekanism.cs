@@ -27,7 +27,7 @@ public abstract class Mekanism : Tile, IMekanism
         _needOutputID = emptyInput;
 
         GameObject res = Instantiate(gameObject, Outputs[_needOutputID].Input.GetPos());
-        res.transform.position = new Vector3(transform.position.x, 0.4f,
+        res.transform.position = new Vector3(transform.position.x, Outputs[_needOutputID].Input.GetPos().position.y+ 0.4f,
             transform.position.z);
         
         Outputs[_needOutputID].Input.NewRes(res);
@@ -105,7 +105,8 @@ public abstract class Mekanism : Tile, IMekanism
         _timerSpawnerRes += Time.deltaTime;
         if (_timerSpawnerRes >= _reloadTimeSpawnerRes)
         {
-            GenerationRes(prefabRes);
+            if(prefabRes!=null)
+                GenerationRes(prefabRes);
             _timerSpawnerRes = 0;
         }
     }

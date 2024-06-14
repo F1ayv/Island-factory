@@ -6,14 +6,16 @@ public class InputMy : MonoBehaviour, IInput
 {
     public IMekanism parent; 
     public IOutput Output { get; set; }
+    private GameObject insideRes;
     public void NewRes(GameObject res)
     {
+        insideRes = res;
         StartCoroutine(ResourceToLastPos(res));
     }
 
     public bool CheckOpacity()
     {
-        return true;
+        return insideRes == null;
     }
     public virtual void SetOutput(IInput b)
     {
@@ -61,18 +63,24 @@ public class InputMy : MonoBehaviour, IInput
     {
         Vector3 newPos = new Vector3(transform.position.x, res.transform.position.y,
             transform.position.z);
-        
-        while (res.transform.position.x - transform.position.x > 0.001f || res.transform.position.z - transform.position.z > 0.001f)
+
+        while (Vector3.Distance(res.transform.position,newPos) > 0.001f)
         {
             res.transform.position = Vector3.MoveTowards(res.transform.position, newPos, Time.deltaTime * 2);
             yield return Time.deltaTime;
         }
-        if(parent!= null)
-            parent.GenerationRes(res);
-        else
+
+        if (parent != null)
         {
-            Destroy(res);
+            while (!parent.GetRes(res))
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
         }
+        
+        Destroy(res);
+        insideRes = null;
+        
         yield return Time.deltaTime;
     }
 }

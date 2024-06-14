@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public class CameraController : MonoBehaviour
@@ -59,14 +60,24 @@ public class CameraController : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 4, 10);
     }
 
+    private bool isUIClick;
     private void Move()
     {
         if(_isRotation || CreateNewBuilding.IsBuildingMode)
             return;
         
+        if (Input.GetMouseButtonUp(0))
+        {
+            isUIClick = false;
+        }
+
+        if(isUIClick)
+            return;;
+        
         FindDistance();
         if (Input.GetMouseButtonDown(0))
         {
+            isUIClick = EventSystem.current.IsPointerOverGameObject();
             lastMousePosition = MousePositionToWorldPoint();
         }
 

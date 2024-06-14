@@ -49,10 +49,13 @@ public class Conveyor : Tile, IConveyor
 
             if (_conveyorOutput != null && Vector3.Distance(resList[i].transform.position, target) <= 0.0001f)
             {
-                LastRes = resList[i];
-                _conveyorOutput.NewRes(resList[i]);
-                resList.RemoveAt(i);
-                i--;
+                if (_conveyorOutput.CheckOpacity())
+                {
+                    LastRes = resList[i];
+                    _conveyorOutput.NewRes(resList[i]);
+                    resList.RemoveAt(i);
+                    i--;
+                }
             }
         }
     }

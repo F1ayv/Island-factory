@@ -7,6 +7,10 @@ public abstract class Tile :MonoBehaviour, ITile
 {
     [SerializeField]
     protected int _sizeX, _sizeZ;
+    [SerializeField]
+    public List<string> isCanInstallTag;
+    [SerializeField]
+    public bool isInstalling;
     // Start is called before the first frame update
     void Start()
     {

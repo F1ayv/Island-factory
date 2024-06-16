@@ -9,7 +9,7 @@ public abstract class Mekanism : Tile, IMekanism
     public List<IOutput> Outputs { get; set ; }
     public Dictionary<int, int> ResInside = new();
     public GameObject prefabRes;
-    
+
     [SerializeField]
     private float _timerSpawnerRes, _reloadTimeSpawnerRes = 1;
     private float lastOutput;

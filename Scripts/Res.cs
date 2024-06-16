@@ -5,7 +5,7 @@ using UnityEngine;
 public class Res : MonoBehaviour
 {
     public int resId;
-    
+    public int price;
     [SerializeField]
     private float _offsetSpawnY = 0;
     // Start is called before the first frame update

@@ -3224,6 +3224,18 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 789530797208178339, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 789530797208178339, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 789530797208178339, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 789530797208178339, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2
       objectReference: {fileID: 0}
@@ -3267,7 +3279,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_4 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8689998506251213869, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
+      propertyPath: m_TagString
+      value: Tree
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7168985886598686133, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
 --- !u!1 &210077375
 GameObject:
@@ -7192,6 +7209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 656424984}
   - component: {fileID: 656424985}
+  - component: {fileID: 656424986}
   m_Layer: 0
   m_Name: Korol
   m_TagString: Untagged
@@ -7228,6 +7246,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedPrefabBuilding: {fileID: 0}
   _sizePrefab: {x: 0, y: 0}
+--- !u!114 &656424986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656424983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1abb58fd115f144bc72d8281c5320b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinValue: 0
+  textCoin: {fileID: 789696207}
 --- !u!1 &656549273
 GameObject:
   m_ObjectHideFlags: 0
@@ -12941,6 +12973,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030636629}
   m_CullTransparentMesh: 1
+--- !u!1 &1038349897 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8689998506251213869, guid: 5866e83bd853b59439b4555bee7fd699, type: 3}
+  m_PrefabInstance: {fileID: 208504412}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1038349898
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038349897}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.91052437, y: 1.894896, z: 0.9472849}
+  m_Center: {x: -0.00000022351742, y: 0.94644797, z: -0.0000008046627}
 --- !u!1 &1053428584
 GameObject:
   m_ObjectHideFlags: 0
@@ -26758,6 +26808,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2121348119}
+  - component: {fileID: 2121348120}
   m_Layer: 0
   m_Name: Sale
   m_TagString: Untagged
@@ -26817,6 +26868,27 @@ Transform:
   m_Father: {fileID: 1728914887}
   m_RootOrder: 56
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2121348120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121348118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea586c48e2b95d4ca08debbe406776b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sizeX: 0
+  _sizeZ: 0
+  isCanInstallTag: []
+  isInstalling: 0
+  prefabRes: {fileID: 0}
+  coinManager: {fileID: 656424986}
+  _timerSpawnerRes: 0
+  _reloadTimeSpawnerRes: 10000
+  _coinManager: {fileID: 656424986}
 --- !u!1 &2122071645
 GameObject:
   m_ObjectHideFlags: 0

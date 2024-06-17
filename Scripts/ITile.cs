@@ -6,4 +6,5 @@ public interface ITile
 {
     Vector2 GetSize();
     public void CheckPos();
+    public bool CanInstall();
 }

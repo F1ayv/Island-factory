@@ -81,7 +81,7 @@ public class CreateNewBuilding : MonoBehaviour
 
                 lastHit = i;
                 Vector3 worldPosition = t.position;
-                Debug.Log(worldPosition);
+                //Debug.Log(worldPosition);
                 // Change the material of all hit colliders
                 // to use a transparent shader.
                 int x = Mathf.RoundToInt(worldPosition.x);
@@ -112,7 +112,15 @@ public class CreateNewBuilding : MonoBehaviour
             else
             {
                 ITile tile = _flyingBuilding.GetComponent<ITile>();
-                tile.CheckPos();
+                if(tile != null)
+                    if(tile.CanInstall())
+                    {
+                        tile.CheckPos();
+                    }
+                else
+                    {
+                        Destroy(_flyingBuilding);
+                    }
             }
             _flyingBuilding = null;
         }

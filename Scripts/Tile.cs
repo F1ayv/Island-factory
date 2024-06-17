@@ -11,6 +11,7 @@ public abstract class Tile :MonoBehaviour, ITile
     public List<string> isCanInstallTag;
     [SerializeField]
     public bool isInstalling;
+    public int buidingsStay;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +24,31 @@ public abstract class Tile :MonoBehaviour, ITile
         
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        Transform t = other.transform;
+     /*   if (other.CompareTag("Untagged") || other.CompareTag("Ground"))
+            return;*/
+        Debug.Log("buildings Stay = " + other.name);
+        buidingsStay++;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+/*        if (other.CompareTag("Untagged") || other.CompareTag("Ground"))
+            return;*/
+        buidingsStay--;
+        Debug.Log("buildings Stay = " + buidingsStay);
+    }
+
     public Vector2 GetSize()
     {
         return new Vector2(_sizeX, _sizeZ);
     }
     public abstract void CheckPos();
+
+    public bool CanInstall()
+    {
+        return buidingsStay == 0;
+    }
 }

@@ -1318,6 +1318,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sizeX: 0
   _sizeZ: 0
+  isCanInstallTag: []
+  isInstalling: 0
+  buidingsStay: 0
+  Recipe: {fileID: 11400000, guid: ca21216309942a545b714e5d419112c1, type: 2}
   prefabRes: {fileID: 616034320212936789, guid: 80ce854f2e042f14c947f76803a2ef4a, type: 3}
   _timerSpawnerRes: 0
   _reloadTimeSpawnerRes: 1

@@ -68,7 +68,7 @@ public class Conveyor : Tile, IConveyor
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 0.7f))
             {
-                Transform transformBulding = hit.transform;
+                Transform transformBulding = hit.collider.transform;
                 if (transformBulding.tag == "Output" && _conveyorInput == null)
                 {
                     Debug.Log("1241");
@@ -197,7 +197,7 @@ public class Conveyor : Tile, IConveyor
                     if (!(_conveyorOutput is InputMy))
                     {
                         _conveyorOutput.GetPos().LookAt(transform);
-                        _conveyorOutput.GetPos().eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                        _conveyorOutput.GetPos().eulerAngles = new Vector3(0, _conveyorOutput.GetPos().eulerAngles.y, 0);
                         _conveyorOutput.GetPos().eulerAngles += new Vector3(0, 90, 0);
                     }
                     return;
@@ -257,6 +257,7 @@ public class Conveyor : Tile, IConveyor
                     Debug.Log(transformConv.localRotation.eulerAngles.y);
                     transformConv.localScale = new Vector3(-1*k, 1, 1*k);
                 }
+                return;
             }
 
             if (Math.Abs(Mathf.Atan(tang) * Mathf.Rad2Deg + 45) < 35f)
@@ -270,6 +271,7 @@ public class Conveyor : Tile, IConveyor
                     Debug.Log(transformConv.localRotation.eulerAngles.y);
                     transformConv.localScale = new Vector3(-1*k, 1, 1*k);
                 }
+                return;
             }
         }
     }

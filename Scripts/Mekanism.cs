@@ -8,14 +8,33 @@ public abstract class Mekanism : Tile, IMekanism
     public List<IInput> Inputs { get; set;}
     public List<IOutput> Outputs { get; set ; }
     public Dictionary<int, int> ResInside = new();
+    public Recipe Recipe;
     public GameObject prefabRes;
 
     [SerializeField]
     private float _timerSpawnerRes, _reloadTimeSpawnerRes = 1;
     private float lastOutput;
 
+    public void SetRecipe(Recipe recipe)
+    {
+        Recipe = recipe;
+        ResInside = new Dictionary<int, int>();
+        foreach (var ins in recipe.inputs)
+        {
+            ResInside.Add(ins.res.resId,0);
+        }
+    }
     public virtual bool GenerationRes(GameObject gameObject)
     {
+        if (Recipe != null  && Recipe.inputs.Length != null)
+        {
+            for (int i = 0; i < Recipe.inputs.Length; i++)
+            {
+                if (Recipe.inputs[i].amount > ResInside[i])
+                    return false;
+            }
+        }
+        
         int emptyInput = CheckInput(_needOutputID, Outputs.Count);
         if(emptyInput < 0)
             emptyInput = CheckInput(0, _needOutputID);
@@ -26,12 +45,24 @@ public abstract class Mekanism : Tile, IMekanism
 
         _needOutputID = emptyInput;
 
-        GameObject res = Instantiate(gameObject, Outputs[_needOutputID].Input.GetPos());
-        res.transform.position = new Vector3(transform.position.x, Outputs[_needOutputID].Input.GetPos().position.y+ 0.4f,
-            transform.position.z);
-        
-        Outputs[_needOutputID].Input.NewRes(res);
+        int j = 1;
+        if(Recipe != null  && Recipe.inputs.Length != null)
+            j = Recipe.outputs[0].amount;
+
+        for (int t = 0; t < j; t++)
+        {
+            GameObject res = Instantiate(gameObject, Outputs[_needOutputID].Input.GetPos());
+            res.transform.position = new Vector3(Outputs[_needOutputID].GetPos().position.x, Outputs[_needOutputID].Input.GetPos().position.y+ 0.4f,
+                Outputs[_needOutputID].GetPos().position.z);
+            Outputs[_needOutputID].Input.NewRes(res);
+        }
         _needOutputID++;
+            
+        if(Recipe != null)
+            foreach (var input in Recipe.inputs)
+            {
+                ResInside[input.res.resId] = 0;
+            }
         return true;
 
         int CheckInput(int startPos,int finalPos)
@@ -65,10 +96,10 @@ public abstract class Mekanism : Tile, IMekanism
                 input.parent = this;
                 Inputs.Add(input);
             }
-        }
+        }   
     }
 
-    public abstract bool GetRes(GameObject res);
+    public abstract bool GetRes(Res res);
 
     public override void CheckPos()
     {
@@ -94,6 +125,8 @@ public abstract class Mekanism : Tile, IMekanism
     // Start is called before the first frame update
     void Start()
     {
+        if(Recipe != null)
+            SetRecipe(Recipe);
         Inputs = new List<IInput>();
         Outputs = new List<IOutput>();
         FindOutputsInputs();

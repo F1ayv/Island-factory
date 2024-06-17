@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WoodMiner : Mekanism
 {
-    public override bool GetRes(GameObject res)
+    public override bool GetRes(Res res)
     {
         return false;
     }

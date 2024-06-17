@@ -72,7 +72,8 @@ public class InputMy : MonoBehaviour, IInput
 
         if (parent != null)
         {
-            while (!parent.GetRes(res))
+            Res res1 = res.GetComponent<Res>();
+            while (!parent.GetRes(res1))
             {
                 yield return new WaitForSeconds(0.1f);
             }

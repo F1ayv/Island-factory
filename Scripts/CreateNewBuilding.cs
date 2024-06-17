@@ -61,6 +61,10 @@ public class CreateNewBuilding : MonoBehaviour
         if (_flyingBuilding == null)
             return;
 
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (!_flyingBuilding.CompareTag("Conveyor"))
+            _flyingBuilding.transform.eulerAngles = new Vector3(0, _flyingBuilding.transform.eulerAngles.y + scroll*50 * 90, 0);
+        
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(ray, 1000);
 

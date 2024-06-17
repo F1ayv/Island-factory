@@ -27,18 +27,18 @@ public abstract class Tile :MonoBehaviour, ITile
     private void OnTriggerEnter(Collider other)
     {
         Transform t = other.transform;
-     /*   if (other.CompareTag("Untagged") || other.CompareTag("Ground"))
-            return;*/
+        if(other.CompareTag("Output") || other.CompareTag("Input"))
+            return;
         Debug.Log("buildings Stay = " + other.name);
         buidingsStay++;
     }
 
     private void OnTriggerExit(Collider other)
     {
-/*        if (other.CompareTag("Untagged") || other.CompareTag("Ground"))
-            return;*/
-        buidingsStay--;
-        Debug.Log("buildings Stay = " + buidingsStay);
+       if(other.CompareTag("Output") || other.CompareTag("Input"))
+            return;
+       buidingsStay--;
+       Debug.Log("buildings Stay = " + buidingsStay);
     }
 
     public Vector2 GetSize()

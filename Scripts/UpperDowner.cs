@@ -5,11 +5,11 @@ using UnityEngine;
 public class UpperDowner : Mekanism
 {
     // Start is called before the first frame update
-    public override bool GetRes(GameObject res)
+    public override bool GetRes(Res res)
     {
-        if (GenerationRes(res))
+        if (GenerationRes(res.gameObject))
         {
-            Destroy(res);
+            Destroy(res.gameObject);
             return true;
         }
         return false;

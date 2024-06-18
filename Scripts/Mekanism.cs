@@ -51,7 +51,11 @@ public abstract class Mekanism : Tile, IMekanism
 
         for (int t = 0; t < j; t++)
         {
-            GameObject res = Instantiate(gameObject, Outputs[_needOutputID].Input.GetPos());
+            GameObject res;
+            if (Recipe != null && Recipe.inputs.Length != null)
+                res = Instantiate(Recipe.outputs[0].res.gameObject, Outputs[_needOutputID].Input.GetPos());
+            else
+                res = Instantiate(gameObject, Outputs[_needOutputID].Input.GetPos());
             res.transform.position = new Vector3(Outputs[_needOutputID].GetPos().position.x, Outputs[_needOutputID].Input.GetPos().position.y+ 0.4f,
                 Outputs[_needOutputID].GetPos().position.z);
             Outputs[_needOutputID].Input.NewRes(res);
@@ -135,6 +139,7 @@ public abstract class Mekanism : Tile, IMekanism
     // Update is called once per frame
     void Update()
     {
+        CheckCanInstall();
         _timerSpawnerRes += Time.deltaTime;
         if (_timerSpawnerRes >= _reloadTimeSpawnerRes)
         {

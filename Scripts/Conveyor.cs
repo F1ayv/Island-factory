@@ -333,24 +333,5 @@ public class Conveyor : Tile, IConveyor
     {
         return transform;
     }
-    
-    public void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position+Vector3.up/3, Vector3.back);
-        
-        for (int x = 0; x < _sizeX; x++)
-        {
-            for (int y = 0; y < _sizeZ; y++)
-            {
-                if((x+y)%2==1)
-                    Gizmos.color = Color.red;
-                else
-                    Gizmos.color = Color.blue;
-                
-                Vector3 pos = new Vector3( + x + transform.position.x , 0, + y + transform.position.z );
-                Gizmos.DrawCube(pos, new Vector3(1, 0.1f, 1));
-            }
-        }
-    }
+   
 }

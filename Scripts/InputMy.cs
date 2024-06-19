@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -69,19 +70,25 @@ public class InputMy : MonoBehaviour, IInput
             res.transform.position = Vector3.MoveTowards(res.transform.position, newPos, Time.deltaTime * 2);
             yield return Time.deltaTime;
         }
-
-        if (parent != null)
+        
+        Res res1 = res.GetComponent<Res>();
+        while (parent != null && !parent.GetRes(res1))
         {
-            Res res1 = res.GetComponent<Res>();
-            while (!parent.GetRes(res1))
-            {
-                yield return new WaitForSeconds(0.1f);
-            }
+            yield return new WaitForSeconds(0.1f);
         }
         
         Destroy(res);
         insideRes = null;
         
         yield return Time.deltaTime;
+    }
+
+    private void OnDestroy()
+    {
+        if (Output != null)
+        {
+            Conveyor c = Output as Conveyor;
+            c._conveyorOutput = null;
+        }
     }
 }

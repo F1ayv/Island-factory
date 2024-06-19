@@ -8,10 +8,11 @@ public abstract class Tile :MonoBehaviour, ITile
     [SerializeField]
     protected int _sizeX, _sizeZ;
     [SerializeField]
-    public List<string> isCanInstallTag;
+    public string isCanInstallTag;
     [SerializeField]
     private bool isInstalling = true;
     public int buidingsStay;
+    public GameObject findedGO;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +45,7 @@ public abstract class Tile :MonoBehaviour, ITile
                     }
                     if (!isGround)
                     {
-                        Debug.Log("Объект не на земле!");
+                        Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!");
                     }
 
                 }
@@ -57,6 +58,13 @@ public abstract class Tile :MonoBehaviour, ITile
         Transform t = other.transform;
         if(other.CompareTag("Output") || other.CompareTag("Input"))
             return;
+
+        if (isCanInstallTag != "" && other.CompareTag(isCanInstallTag))
+        {
+            findedGO = other.gameObject;
+            return;
+        } 
+        
         Debug.Log("buildings Stay = " + other.name);
         buidingsStay++;
     }
@@ -65,6 +73,13 @@ public abstract class Tile :MonoBehaviour, ITile
     {
        if(other.CompareTag("Output") || other.CompareTag("Input"))
             return;
+       
+       if (isCanInstallTag != "" && other.CompareTag(isCanInstallTag))
+       {
+           findedGO = null;
+           return;
+       } 
+       
        buidingsStay--;
        Debug.Log("buildings Stay = " + buidingsStay);
     }
@@ -77,7 +92,7 @@ public abstract class Tile :MonoBehaviour, ITile
 
     public bool CanInstall()
     {
-        return buidingsStay == 0;
+        return buidingsStay == 0 && (isCanInstallTag == "" || isCanInstallTag != "" && findedGO!=null);
     }
 
     public void OnDrawGizmos()

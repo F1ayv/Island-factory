@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,15 @@ public class Output : MonoBehaviour, IOutput
 
                 break;
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Input != null)
+        {
+            Conveyor c = Input as Conveyor;
+            c._conveyorInput = null;
         }
     }
 }

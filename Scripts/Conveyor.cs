@@ -217,9 +217,10 @@ public class Conveyor : Tile, IConveyor
             transform.LookAt(transformConv);
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             transform.eulerAngles += new Vector3(0, 90, 0);
-            if (_conveyorInput.GetInput() == null)
+            IOutput output = _conveyorInput.GetInput();
+            if (output == null)
                 return;
-            Transform t = _conveyorInput.GetInput().GetPos();
+            Transform t = output.GetPos();
             FindPosition(0,t,transform,-1);
         }
         else if (_conveyorOutput != null)
@@ -232,7 +233,10 @@ public class Conveyor : Tile, IConveyor
             {
                 _conveyorOutput.GetPos().rotation = transform.rotation;
                 return;
-            }
+            }                    
+            transformConv.LookAt(_conveyorOutput.GetOutput().GetPos());
+            transformConv.eulerAngles = new Vector3(0, transformConv.eulerAngles.y, 0);
+            transformConv.eulerAngles += new Vector3(0, -90, 0);
             Transform t = _conveyorOutput.GetOutput().GetPos();
             FindPosition(270,t,transform,1);
         }
@@ -333,5 +337,35 @@ public class Conveyor : Tile, IConveyor
     {
         return transform;
     }
-   
+
+    public void OnDestroy()
+    {
+        if (_conveyorInput != null)
+        {
+            if (_conveyorInput is Conveyor)
+            {
+                Conveyor c = _conveyorInput as Conveyor;
+                c._conveyorOutput = null;
+            }
+            else
+            {
+                Output c = _conveyorInput as Output;
+                c.Input = null;
+            }
+        }
+
+        if (_conveyorOutput != null)
+        {
+            if (_conveyorOutput is Conveyor)
+            {
+                Conveyor c = _conveyorOutput as Conveyor;
+                c._conveyorInput = null;
+            }
+            else
+            {
+                InputMy c = _conveyorOutput as InputMy;
+                c.Output = null;
+            }
+        }
+    }
 }

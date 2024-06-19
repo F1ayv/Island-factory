@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Plane = UnityEngine.Plane;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -11,9 +12,12 @@ public class CreateNewBuilding : MonoBehaviour
 {
     [SerializeField] private GameObject _selectedPrefabBuilding;
     [SerializeField] public static bool IsBuildingMode = true;
+    [SerializeField] public static bool IsDeleteMode = false;
     [SerializeField] private Vector2 _sizePrefab;
-    GameObject _flyingBuilding;
+    public static GameObject _flyingBuilding;
     private Plane plane;
+    [SerializeField] private Sprite _buildingButtonIcon, _moveButtonIcon;
+    [SerializeField] private Image _icon,_deleteImage;
     public void SelectPrefabBuilding(GameObject prefab)
     {
         _selectedPrefabBuilding = prefab;
@@ -36,8 +40,12 @@ public class CreateNewBuilding : MonoBehaviour
     private int numConv = 0;
     void Update()
     {
-        Building();
-        TapToBuilding();
+        if(!IsDeleteMode)
+            Building();
+        else
+        {
+            DeleteBuilding();
+        }
     }
 
     public void Building()
@@ -130,13 +138,60 @@ public class CreateNewBuilding : MonoBehaviour
         }
     }
 
-    public void TapToBuilding()
+    public void DeleteBuilding()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] hits = Physics.RaycastAll(ray, 1000);
+
+            foreach (var hit in hits)
+            {
+                if (!hit.transform.CompareTag("Ground"))
+                {
+                    Tile t = hit.transform.GetComponent<Tile>();
+                    if (t != null)
+                    {
+                        Destroy(t.gameObject);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void SetIsDeleteMode()
+    {
+        IsDeleteMode = !IsDeleteMode;
+
+        if (!IsDeleteMode)
+        {
+            _deleteImage.color = new Color(0.6320754f,0.6320754f,0.6320754f);
+        }
+        else
+        {
+            _deleteImage.color = new Color(0.735849f,0.410904f,0.07289071f);
+        }
     }
 
     public void SetBuidingMode()
     {
         IsBuildingMode = !IsBuildingMode;
+
+        if (IsBuildingMode)
+        {
+            _deleteImage.gameObject.SetActive(true);
+            _icon.sprite = _buildingButtonIcon;
+        }
+        else
+        {
+            _deleteImage.gameObject.SetActive(false);
+            if (IsDeleteMode)
+                SetIsDeleteMode();
+            _icon.sprite = _moveButtonIcon;
+        }
     }
 }

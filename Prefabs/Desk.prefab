@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466645d66587fee47afcc8b183947b85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resId: 3
+  resId: 2
   price: 5
   _offsetSpawnY: 0
 --- !u!1 &4375693684645477130

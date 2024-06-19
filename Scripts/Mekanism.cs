@@ -10,7 +10,9 @@ public abstract class Mekanism : Tile, IMekanism
     public Dictionary<int, int> ResInside = new();
     public Recipe Recipe;
     public GameObject prefabRes;
-
+    public bool isStatistic = false;
+    
+    private StatGenerator _statGenerator;
     [SerializeField]
     private float _timerSpawnerRes, _reloadTimeSpawnerRes = 1;
     private float lastOutput;
@@ -48,6 +50,16 @@ public abstract class Mekanism : Tile, IMekanism
         int j = 1;
         if(Recipe != null  && Recipe.inputs.Length != null)
             j = Recipe.outputs[0].amount;
+
+        if (isStatistic)
+        {
+            if (Recipe != null)
+                _statGenerator.AddSum(Recipe.outputs[0].res.resId, j);
+            else
+            {
+                _statGenerator.AddSum(gameObject.GetComponent<Res>().resId,1);
+            }
+        }
 
         for (int t = 0; t < j; t++)
         {
@@ -107,6 +119,7 @@ public abstract class Mekanism : Tile, IMekanism
 
     public override void CheckPos()
     {
+        SetParamsInstall();
         foreach (var output in Outputs)
         {
             if(!(output is Output))
@@ -126,9 +139,14 @@ public abstract class Mekanism : Tile, IMekanism
         }
     }
 
+    public virtual void SetParamsInstall()
+    {
+        
+    }
     // Start is called before the first frame update
     void Start()
     {
+        _statGenerator = FindObjectOfType<StatGenerator>();
         if(Recipe != null)
             SetRecipe(Recipe);
         Inputs = new List<IInput>();

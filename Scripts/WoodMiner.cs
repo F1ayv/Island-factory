@@ -9,4 +9,9 @@ public class WoodMiner : Mekanism
     {
         return false;
     }
+
+    public override void SetParamsInstall()
+    {
+        prefabRes = findedGO.GetComponent<ResGen>().resPrefab;
+    }
 }

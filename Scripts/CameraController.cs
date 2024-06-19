@@ -31,7 +31,8 @@ public class CameraController : MonoBehaviour
     {
         Rotation();
         Move();
-        Zoom();
+        if(CreateNewBuilding._flyingBuilding == null)
+            Zoom();
     }
 
     private void Rotation()

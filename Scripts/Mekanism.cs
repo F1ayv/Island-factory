@@ -157,7 +157,6 @@ public abstract class Mekanism : Tile, IMekanism
     // Update is called once per frame
     void Update()
     {
-        CheckCanInstall();
         _timerSpawnerRes += Time.deltaTime;
         if (_timerSpawnerRes >= _reloadTimeSpawnerRes)
         {

@@ -18,6 +18,7 @@ public class CreateNewBuilding : MonoBehaviour
     private Plane plane;
     [SerializeField] private Sprite _buildingButtonIcon, _moveButtonIcon;
     [SerializeField] private Image _icon,_deleteImage;
+    public GameObject menuBuildings;
     public void SelectPrefabBuilding(GameObject prefab)
     {
         _selectedPrefabBuilding = prefab;
@@ -183,11 +184,13 @@ public class CreateNewBuilding : MonoBehaviour
 
         if (IsBuildingMode)
         {
+            menuBuildings.SetActive(true);
             _deleteImage.gameObject.SetActive(true);
             _icon.sprite = _buildingButtonIcon;
         }
         else
         {
+            menuBuildings.SetActive(false);
             _deleteImage.gameObject.SetActive(false);
             if (IsDeleteMode)
                 SetIsDeleteMode();

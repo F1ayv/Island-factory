@@ -8228,6 +8228,7 @@ MonoBehaviour:
   _moveButtonIcon: {fileID: 21300000, guid: 1288c94d19eb4e94da6ed21e6b69c73e, type: 3}
   _icon: {fileID: 633638657}
   _deleteImage: {fileID: 678554726}
+  menuBuildings: {fileID: 440999909}
 --- !u!114 &656424986
 MonoBehaviour:
   m_ObjectHideFlags: 0
